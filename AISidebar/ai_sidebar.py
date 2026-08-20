@@ -1054,7 +1054,7 @@ class O3DEIntegration:
     def apply_terrain(terrain_config):
         try:
             entity_id = DynamicBus.ToolsRequestBus.Broadcast.RequestCreateEntity("AI_Terrain_" + terrain_config.get("name", "unknown"))
-            if entity_id and entity_id:IsValid():
+            if entity_id and entity_id.IsValid():
                 editor.EditorEntityAPIBus.Broadcast.AddComponent(entity_id, "TerrainWorldComponent")
                 editor.EditorEntityAPIBus.Broadcast.AddComponent(entity_id, "TerrainLayerSpawnerComponent")
                 editor.EditorEntityAPIBus.Broadcast.AddComponent(entity_id, "TerrainHeightGradientListComponent")
