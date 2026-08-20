@@ -1,0 +1,71 @@
+# API Keys and Secrets
+*.env
+.env
+.env.local
+.env.production
+OPENROUTER_API_KEY*
+**/api_key*
+**/secret*
+**/credentials*
+sk-or-v1-*
+sk-*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# O3DE Build artifacts
+**/build/
+**/cmake-build-*/
+*.o
+*.obj
+*.dll
+*.dylib
+*.exe
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large binary files (handled by Git LFS)
+*.fbx
+*.gltf
+*.glb
+*.obj
+*.blend
+*.wav
+*.mp3
+*.ogg
+*.png
+*.tga
+*.hdr
+*.exr
+*.hdr
+
+# Generated assets (keep structure, ignore content)
+AIProject/Assets/Terrains/*.json
+AIProject/Assets/Models/*.json
+AIProject/Assets/Textures/*.json
+AIProject/Assets/Audio/*.json
+AIProject/Assets/Animations/*.json
+
+# Logs
+*.log
+logs/
