@@ -1,0 +1,28 @@
+{
+    "gem_name": "AIDesignStudio",
+    "version": "1.0.0",
+    "display_name": "AI Design Studio",
+    "license": "GPL-3.0",
+    "license_url": "https://github.com/Aghosh-mv/O3DE-ai-studio/blob/main/LICENSE",
+    "origin": "Aghosh-mv",
+    "origin_url": "https://github.com/Aghosh-mv/O3DE-ai-studio",
+    "type": "Tool",
+    "summary": "AI-powered game design sidebar for O3DE. Generate terrain, 3D models, code, animations, and audio from natural language prompts using OpenRouter free models.",
+    "canonical_tags": [
+        "Gem"
+    ],
+    "user_tags": [
+        "AI",
+        "Tools",
+        "Scripting",
+        "Design",
+        "Productivity"
+    ],
+    "icon_path": "preview.png",
+    "requirements": "OpenRouter API key for live LLM code generation (free models available)",
+    "documentation_url": "https://github.com/Aghosh-mv/O3DE-ai-studio",
+    "dependencies": [
+        "QtForPython",
+        "EditorPythonBindings"
+    ]
+}

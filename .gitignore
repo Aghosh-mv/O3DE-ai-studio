@@ -31,6 +31,7 @@ build/
 *.dll
 *.dylib
 *.exe
+*.pdb
 
 # IDE
 .vscode/
@@ -44,7 +45,7 @@ build/
 Thumbs.db
 desktop.ini
 
-# Large binary files (handled by Git LFS)
+# Large binary files (use Git LFS for these)
 *.fbx
 *.gltf
 *.glb
@@ -57,7 +58,6 @@ desktop.ini
 *.tga
 *.hdr
 *.exr
-*.hdr
 
 # Generated assets (keep structure, ignore content)
 AIProject/Assets/Terrains/*.json
@@ -69,3 +69,9 @@ AIProject/Assets/Animations/*.json
 # Logs
 *.log
 logs/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
