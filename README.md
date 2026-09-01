@@ -1,6 +1,6 @@
 # O3DE AI Design Studio
 
-**The closest thing to "vibe coding" a complete game.**
+**The closest thing to "vibe coding" a complete AAA game.**
 
 An AI-powered sidebar for Open 3D Engine (O3DE) that lets you generate terrain, 3D models, textures, code, animations, audio, and complete game systems from a single natural language prompt.
 
@@ -27,134 +27,128 @@ And the system generates:
 - **Audio** - Background music/narration via ElevenLabsClone
 - **Blueprints** - ScriptCanvas node configurations
 
-## Architecture
+## Quick Start
 
+### Prerequisites
+
+| Requirement | Version | Notes |
+|-------------|---------|-------|
+| **Git** | Latest | For cloning |
+| **CMake** | 3.24+ | 3.28 recommended |
+| **Clang** | 14+ | Or GCC 13+ |
+| **Python** | 3.10+ | O3DE's embedded Python |
+| **OS** | Linux (Ubuntu 22.04+) or Windows | |
+
+### Linux Setup (Tested on Ubuntu 22.04)
+
+```bash
+# Install dependencies
+sudo apt-get update
+sudo apt-get install -y build-essential clang lld pkg-config \
+  libunwind-dev libzstd-dev libxcb-xinput0-dev libxcb-xfixes0-dev \
+  libxcb-keysyms1-dev libxcb-image0-dev libxcb-shm0-dev \
+  libxcb-icccm4-dev libxcb-sync-dev libxcb-shape0-dev \
+  libxcb-randr0-dev libxcb-render-util0-dev libxcb-xinerama0-dev \
+  libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev \
+  python3-dev libssl-dev
+
+# Clone and build
+git clone https://github.com/Aghosh-mv/O3DE-ai-studio.git
+cd O3DE-ai-studio
+
+# Run O3DE's python setup to get 3rdParty dependencies
+python3 scripts/o3de.py register --this-engine
+
+# Configure with CMake (clang recommended)
+cmake -B build -S . -G "Unix Makefiles" \
+  -DCMAKE_BUILD_TYPE=profile \
+  -DCMAKE_C_COMPILER=/usr/bin/clang \
+  -DCMAKE_CXX_COMPILER=/usr/bin/clang++
+
+# Build the Editor (~15-20 min depending on hardware)
+cmake --build build --target Editor --config profile -j$(nproc)
 ```
-O3DE Editor
-  └── AI Design Studio (Sidebar Panel)
-        ├── Chat Interface (Natural Language Input)
-        ├── Full Game Orchestrator (Chains all tools)
-        ├── Live LLM (OpenRouter Free Models)
-        ├── Terrain Generator (ProceduralTerrains)
-        ├── 3D Model Pipeline (Hunyuan3D, Dust3D)
-        ├── Texture Pipeline (ComfyUI, Stable Diffusion)
-        ├── Code Generator (LLM + Templates)
-        ├── Animation Pipeline (GANimator, DeepMotionEditing)
-        ├── Audio Pipeline (ElevenLabsClone, InworldAI)
-        └── Blueprint Generator (ScriptCanvas)
+
+### Windows Setup
+
+```powershell
+# Install Visual Studio 2022 with C++ workload
+# Install CMake 3.28+ from https://cmake.org/download/
+# Install Python 3.10+
+
+git clone https://github.com/Aghosh-mv/O3DE-ai-studio.git
+cd O3DE-ai-studio
+
+python scripts/o3de.py register --this-engine
+
+cmake -B build -S . -G "Visual Studio 17 2022"
+cmake --build build --target Editor --config profile
 ```
 
-## Integrated AI Tools
+### Run the Editor
 
-| Tool | Purpose | Type |
-|------|---------|------|
-| **OpenRouter** | Live LLM for code generation | Free Models API |
-| **ProceduralTerrains** | GPU-based terrain generation | Local/WebGL |
-| **Hunyuan3D** | Text/Image to 3D model | AI Pipeline |
-| **Dust3D** | Mesh generation | Local |
-| **ComfyUI** | Texture generation (Stable Diffusion) | Local/API |
-| **GANimator** | Novel motion synthesis | Local/Python |
-| **DeepMotionEditing** | Motion retargeting | Local/Python |
-| **ElevenLabsClone** | Text-to-speech | Local/Docker |
-| **InworldAI** | Voice AI for NPCs | API |
-| **AutoGen** | Multi-agent orchestration | Local/Python |
-| **Cline/RooCode** | Autonomous coding | Local/CLI |
-| **DeepSeek-R1** | Reasoning model | Local |
-| **GPT-NeoX** | Open-source LLM | Local |
+```bash
+# Linux
+cd build/bin/profile
+./Editor
 
-## Free LLM Models (OpenRouter)
+# Windows
+cd build\bin\profile
+Editor.exe
+```
 
-The system uses OpenRouter's free models for code generation:
+### Open AI Design Studio
+
+Once the editor loads:
+1. Go to **View → AI Design Studio** in the menu bar
+2. Enter your **OpenRouter API key** in the Settings tab
+3. Click **Chat** tab and start typing your game idea
+4. Click **"FULL GAME - One Prompt"** to generate everything at once
+
+## Getting Your Free API Key
+
+1. Go to [openrouter.ai](https://openrouter.ai)
+2. Sign up (free)
+3. Go to **Keys** → Create new key
+4. Copy the key (starts with `sk-or-v1-`)
+5. Paste it into the AI Design Studio Settings tab
+
+**Free tier includes:**
+- 20 requests/minute
+- 50 requests/day
+- All free models available
+
+**With $10 credits:**
+- 1000 requests/day
+- Access to paid models
+
+## Free Models Available
 
 | Model | Context | Best For |
 |-------|---------|----------|
-| `openrouter/free` | Auto-select | General use |
-| `nvidia/nemotron-3-ultra-550b-a55b:free` | 1M tokens | Large context |
+| `auto` | Auto-select | General use |
+| `nvidia/nemotron-ultra-253b:free` | 1M tokens | Large context |
+| `nvidia/nemotron-super-49b-a17b:free` | 262K tokens | General |
 | `google/gemma-4-31b-it:free` | 262K tokens | General |
 | `openai/gpt-oss-20b:free` | 131K tokens | Fast coding |
 | `meta-llama/llama-3.3-70b-instruct:free` | 131K tokens | Code generation |
 | `dots-studio/dots-3-note-preview:free` | 512K tokens | Reasoning |
 | `poolside/laguna-s-2.1:free` | 262K tokens | Coding agents |
 
-**Rate Limits:** 20 req/min, 50 req/day (free), 1000 req/day (with $10 credits)
-
-## Quick Start
-
-### 1. Clone This Repository
-```bash
-git clone https://github.com/aghosh-mv/o3de-ai-studio.git
-cd o3de-ai-studio
-```
-
-### 2. Set Your API Key
-```bash
-export OPENROUTER_API_KEY="sk-or-v1-your-key-here"
-```
-Or enter it in the AI Design Studio Settings tab.
-
-### 3. Build O3DE (or use pre-built)
-```bash
-cd o3de-ai-studio
-cmake -B build/windows -S . -G "Visual Studio 16 2019"
-cmake --build build/windows --target Editor
-```
-
-### 4. Open the Editor
-The AI Design Studio sidebar auto-registers. Go to: **View → AI Design Studio**
-
-### 5. Start Creating
-Type your game concept and click **"FULL GAME - One Prompt"**
-
-## Project Structure
-
-```
-o3de-ai-studio/
-├── AISidebar/                 # AI Design Studio panel
-│   ├── ai_sidebar.py          # Main sidebar UI (PySide6/Qt)
-│   ├── full_game_orchestrator.py  # Chains all AI tools
-│   └── o3de_knowledge.py      # O3DE engine knowledge base
-├── AIProject/                 # Generated assets output
-│   └── Assets/
-│       ├── Code/              # Generated Lua/Python scripts
-│       ├── Models/            # 3D model pipelines
-│       ├── Textures/          # Texture pipelines
-│       ├── Terrains/          # Terrain configurations
-│       ├── Audio/             # Audio pipelines
-│       ├── Animations/        # Animation pipelines
-│       └── Scripts/           # System scripts
-├── ProceduralTerrains/        # Terrain generation tool
-├── Hunyuan3D/                 # 3D model generation
-├── Dust3D/                    # Mesh generation
-├── ComfyUI/                   # Texture generation
-├── GANimator/                 # Animation synthesis
-├── DeepMotionEditing/         # Motion retargeting
-├── ElevenLabsClone/           # Text-to-speech
-├── InworldAI/                 # Voice AI
-├── AutoGen/                   # Multi-agent orchestration
-├── Cline/                     # Autonomous coding
-├── RooCode/                   # Code generation
-├── DeepSeek-R1/               # Reasoning model
-├── GPT-NeoX/                  # Open-source LLM
-├── BlenderMCP/                # Blender integration
-├── Code/                      # O3DE editor source
-├── Gems/                      # O3DE engine gems
-└── README.md
-```
-
 ## How It Works
 
 ### Single Tool Generation
-1. User types a prompt in the AI sidebar
+1. You type a prompt in the AI sidebar
 2. The system detects what type of content to generate (terrain, code, model, etc.)
 3. The appropriate generator is called
 4. For code: the LLM is called first, falls back to templates
-5. Generated content is saved to the AIProject/Assets directory
+5. Generated content is saved to the project directory
 6. O3DE's Asset Processor auto-compiles new assets
 
 ### Full Game Generation
-1. User types a game concept and clicks "FULL GAME"
+1. You type a game concept and click "FULL GAME"
 2. The orchestrator analyzes the prompt for game type, complexity, features
-3. It creates a generation plan (terrain → models → textures → code → AI → animations → audio → systems)
+3. It creates a generation plan (terrain -> models -> textures -> code -> AI -> animations -> audio -> systems)
 4. Each task is executed in sequence
 5. All generated files are saved to the project directory
 6. Summary is shown in the chat
@@ -167,8 +161,6 @@ o3de-ai-studio/
 
 ## Supported Game Types
 
-The orchestrator auto-detects and generates appropriate systems for:
-
 | Game Type | Auto-Generated Systems |
 |-----------|----------------------|
 | **RPG** | Inventory, Dialogue, Quest, Stats, Save System |
@@ -176,15 +168,78 @@ The orchestrator auto-detects and generates appropriate systems for:
 | **Platformer** | Movement, Jumping, Collectibles, Lives, Checkpoints |
 | **Horror** | Sanity, Flashlight, Hiding, AI Enemy |
 | **Strategy** | Resources, Building, Units, Wave Spawner |
+| **Racing** | Vehicle, Track, Speed, Checkpoints, Lap System |
+| **Survival** | Hunger, Thirst, Health, Crafting, Base Building |
+| **Space** | Ship, Weapons, Shields, Asteroids, Docking |
 | **Simulation** | Resources, Building, Management |
 
-## Requirements
+## Project Structure
 
-- **O3DE 26.05** (source or pre-built)
-- **Python 3.10+** (for editor scripting)
-- **PySide6** (for Qt UI)
-- **OpenRouter API key** (free tier available)
-- **GPU** (optional, for local AI tools like ComfyUI, GANimator)
+```
+O3DE-ai-studio/
+├── Gems/
+│   └── AIDesignStudio/          # AI Design Studio Gem
+│       ├── gem.json             # Gem metadata
+│       ├── CMakeLists.txt       # Build configuration
+│       └── Editor/Scripts/
+│           ├── ai_sidebar.py    # Main sidebar UI (PySide6/Qt)
+│           ├── full_game_orchestrator.py  # One-prompt game generator
+│           └── o3de_knowledge.py # O3DE engine knowledge base
+├── Gems/QtForPython/            # Qt for Python (auto-loaded)
+│   └── Editor/Scripts/
+│       └── bootstrap.py         # Auto-registers AI Design Studio
+├── Code/                        # O3DE engine source
+├── cmake/                       # CMake build system
+├── Scripts/                     # O3DE build scripts
+├── python/                      # Python requirements
+└── README.md
+```
+
+## AI Tools Integrated
+
+| Tool | Purpose | Status |
+|------|---------|--------|
+| **OpenRouter** | Live LLM for code generation | Integrated |
+| **ProceduralTerrains** | GPU-based terrain generation | Integrated |
+| **Hunyuan3D** | Text/Image to 3D model | Integrated |
+| **Dust3D** | Mesh generation | Integrated |
+| **ComfyUI** | Texture generation (Stable Diffusion) | Integrated |
+| **GANimator** | Novel motion synthesis | Integrated |
+| **DeepMotionEditing** | Motion retargeting | Integrated |
+| **ElevenLabsClone** | Text-to-speech | Integrated |
+| **InworldAI** | Voice AI for NPCs | Integrated |
+| **AutoGen** | Multi-agent orchestration | Integrated |
+
+## Troubleshooting
+
+### Build fails with "Could NOT find Threads"
+Fix: Install `libunwind-dev` and `libzstd-dev`:
+```bash
+sudo apt-get install -y libunwind-dev libzstd-dev
+```
+
+### Build fails with "PRIVATE: linker input file not found"
+This is a known O3DE cmake bug. The fix is in `cmake/Platform/Common/GCC/Configurations_gcc.cmake` - ensure line 50 reads:
+```cmake
+set(O3DE_COMPILE_OPTION_DISABLE_FAST_MATH -fno-fast-math)
+```
+(No `PRIVATE` keyword)
+
+### Editor crashes on startup
+Ensure you have a GPU with Vulkan support, or use the software renderer:
+```bash
+./Editor --rhi=null
+```
+
+### AI sidebar doesn't appear
+Check that `Gems/QtForPython/Editor/Scripts/bootstrap.py` includes the AI Design Studio registration code. The sidebar appears under **View → AI Design Studio**.
+
+### "No space left on device"
+O3DE build requires ~15-20GB of disk space. Clean up before building:
+```bash
+du -sh ~/ollama-training/  # Check large directories
+# Move or delete what you don't need
+```
 
 ## License
 
@@ -196,7 +251,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## Acknowledgments
 
-- **Open 3D Engine** - The open-source game engine
+- **Open 3D Engine** - The open-source game engine by the Linux Foundation
 - **OpenRouter** - Free AI model API
 - **All AI tool repositories** integrated into this project
 
